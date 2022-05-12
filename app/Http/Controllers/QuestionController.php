@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +19,7 @@ class QuestionController extends Controller
     public function index()
     {
         $questions = Question::query()->get();
-        return $questions;
+        return $this->returnData('data', $questions, 'List Questions');
     }
 
     /**
@@ -28,11 +30,11 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $Question = Question::query()->create([
+        $question = Question::query()->create([
             'question_value'=>$request->question_value,
             'type_id'=>$request->type_id,
         ]);
-        return $Question;
+        return $this->returnData('data', $question, 'added question success');
     }
 
     /**
@@ -48,7 +50,7 @@ class QuestionController extends Controller
             'question_value' => $request->question_value,
             'type_id' => $request->type_id,
         ]);
-        return $questionID;
+        return $this->returnData('data', $questionID, 'updated question success');
     }
 
     /**
@@ -60,6 +62,6 @@ class QuestionController extends Controller
     public function destroy(Question $questionID)
     {
         $questionID->delete();
-        return 'success delete';
+        return $this->returnSuccessMessage('deleted question success');
     }
 }

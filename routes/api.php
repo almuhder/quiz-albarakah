@@ -25,9 +25,9 @@ Route::get('logout', [\App\Http\Controllers\AuthAdminController::class, 'logout'
     ->middleware('auth:admin');
 
 
-Route::post('forgot-password', [\App\Http\Controllers\AuthAdminController::class, 'forgotPassword'])
-    ->middleware('auth:admin');
-Route::post('forgot-password', [\App\Http\Controllers\AuthAdminController::class, 'forgotPassword'])
+Route::post('forgot-password', [\App\Http\Controllers\AuthAdminController::class, 'forgotPassword']);
+Route::post('reset-password', [\App\Http\Controllers\AuthAdminController::class, 'resetPassword']);
+Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class, 'changePassword'])
     ->middleware('auth:admin');
 
 

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Null_;
 
 class StudentController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -21,16 +23,12 @@ class StudentController extends Controller
             $students->where('student_code', 'LIKE', '%'.$searchByCode.'%');
         }
         $studentQuery = $students->get();
-        return $studentQuery;
+        return $this->returnData('data', $studentQuery, 'List Students');
     }
 
     public function studentResults() {
         $studentResults = Student::query()->with('results')->get();
-        return $studentResults;
-    }
-
-    public function search() {
-
+        return $this->returnData('data', $studentResults, 'List Students With Result');
     }
     /**
      * Store a newly created resource in storage.
@@ -43,7 +41,7 @@ class StudentController extends Controller
         $student = Student::query()->create([
             'student_code' => $request->student_code,
         ]);
-        return $student;
+        return $this->returnData('data', $student, 'added student success');
     }
 
 
@@ -60,7 +58,7 @@ class StudentController extends Controller
         $studentID->update([
             'student_code' => $request->student_code,
         ]);
-        return $studentID;
+        return $this->returnData('data', $studentID, 'updated Student Code success');
     }
 
     /**
@@ -72,6 +70,6 @@ class StudentController extends Controller
     public function destroy(Student $studentID)
     {
         $studentID->delete();
-        return 'success deleted student';
+        return $this->returnSuccessMessage('deleted student success');
     }
 }
