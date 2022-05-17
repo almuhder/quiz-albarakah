@@ -24,7 +24,12 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+            'email' => 'required|email',
+            'password' =>[
+                'required',
+                'string',
+                'min:8'            // must be at least 8 characters in length
+        ],
+            ];
     }
 }

@@ -54,3 +54,5 @@ Route::middleware('auth:admin')->prefix('student-code')->group(function (){
     Route::put('edit/{studentID}', [\App\Http\Controllers\StudentController::class, 'update']);
     Route::delete('delete/{studentID}', [\App\Http\Controllers\StudentController::class, 'destroy']);
 });
+Route::post('store-result', [\App\Http\Controllers\StudentController::class, 'storeResult'])
+    ->middleware('auth:admin');

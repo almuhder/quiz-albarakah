@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:admins',
+            'old_password' => 'required|string',
             'password' =>[
                 'required',
                 'string',
@@ -33,8 +33,7 @@ class RegisterRequest extends FormRequest
                 'regex:/[a-z]/',      // must contain at least one lowercase letter
                 'regex:/[0-9]/',      // must contain at least one digit
                 'regex:/[@$!%*#?&]/', // must contain a special character
-            ],
-
+                ]
         ];
     }
 }

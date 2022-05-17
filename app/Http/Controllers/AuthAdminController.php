@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\Admin;
 use App\Traits\GeneralTrait;
 use Illuminate\Auth\AuthenticationException;
@@ -48,15 +51,12 @@ use GeneralTrait;
         return $this->returnData('data', $data,'logged in successfully');
     }
 
-    public function logout(Request $request){
-        $request->user()->tokens()->delete();
+    public function logout(){
+        Auth::user()->tokens()->delete();
         return $this->returnSuccessMessage('logged out successfully');
     }
 
-    public function forgotPassword(Request $request) {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
+    public function forgotPassword(ForgotPasswordRequest $request) {
         $status = Password::sendResetLink($request->only('email'));
         if ($status == Password::RESET_LINK_SENT) {
             return $this->returnSuccessMessage(__($status));
@@ -66,7 +66,7 @@ use GeneralTrait;
         ]);
     }
 
-    public function resetPassword(Request $request) {
+    public function resetPassword(ResetPasswordRequest $request) {
        $status = Password::reset($request->only('email','token', 'password', 'password_confirmation'),
        function ($admin, $password) {
            $admin->forceFill([
@@ -85,7 +85,7 @@ use GeneralTrait;
         return $this->returnErrorMessage(__($status), 500);
     }
 
-    public function changePassword(Request $request) {
+    public function changePassword(ChangePasswordRequest $request) {
         $user = $request->user();
         if (Hash::check($request->old_password, $user->getAuthPassword())) {
             $user->update([

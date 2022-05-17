@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Result extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'score', 'student_id'
+    ];
 
 
     public function studentResult() {

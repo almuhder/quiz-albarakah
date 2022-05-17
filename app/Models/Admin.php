@@ -18,6 +18,9 @@ class Admin extends Authenticatable
 
     protected $table = 'admins';
     protected $primaryKey = 'id';
+    protected $hidden = [
+        'password', 'updated_at', 'remember_token'
+    ];
 
     public function sendPasswordResetNotification($token)
     {
