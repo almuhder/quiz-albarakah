@@ -30,9 +30,10 @@ Route::post('reset-password', [\App\Http\Controllers\AuthAdminController::class,
 Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class, 'changePassword'])
     ->middleware('auth:admin');
 
+Route::get('question/all', [\App\Http\Controllers\QuestionController::class, 'index']);
 
 Route::middleware('auth:admin')->prefix('question')->group(function (){
-    Route::get('all', [\App\Http\Controllers\QuestionController::class, 'index']);
+
     Route::put('edit/{questionID}', [\App\Http\Controllers\QuestionController::class, 'update']);
     Route::post('/add', [\App\Http\Controllers\QuestionController::class, 'store']);
     Route::delete('delete/{product}', [\App\Http\Controllers\QuestionController::class, 'destroy']);
