@@ -14,6 +14,11 @@ class Question extends Model
     ];
 
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
+
     public function type() {
         return $this->belongsTo(Type::class, 'type_id');
 }

@@ -51,7 +51,7 @@ use GeneralTrait;
         return $this->returnData('data', $data,'logged in successfully');
     }
 
-    public function logout(){
+    public function logout() {
         Auth::user()->tokens()->delete();
         return $this->returnSuccessMessage('logged out successfully');
     }

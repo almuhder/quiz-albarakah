@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -18,7 +19,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::query()->get();
+        $questions = Question::query()->with('type')->get();
         return $this->returnData('data', $questions, 'List Questions');
     }
 

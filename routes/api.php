@@ -30,7 +30,8 @@ Route::post('reset-password', [\App\Http\Controllers\AuthAdminController::class,
 Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class, 'changePassword'])
     ->middleware('auth:admin');
 
-Route::get('question/all', [\App\Http\Controllers\QuestionController::class, 'index']);
+Route::get('question/all', [\App\Http\Controllers\QuestionController::class, 'index'])
+    ->middleware('auth:student');
 
 Route::middleware('auth:admin')->prefix('question')->group(function (){
 
@@ -56,4 +57,5 @@ Route::middleware('auth:admin')->prefix('student-code')->group(function (){
     Route::delete('delete/{studentID}', [\App\Http\Controllers\StudentController::class, 'destroy']);
 });
 Route::post('store-result', [\App\Http\Controllers\StudentController::class, 'storeResult'])
-    ->middleware('auth:admin');
+    ->middleware('auth:student');
+Route::post('login-student', [\App\Http\Controllers\StudentController::class, 'login']);

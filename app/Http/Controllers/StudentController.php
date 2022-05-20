@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginStudentRequest;
 use App\Http\Requests\StoreResultRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
@@ -19,6 +20,21 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function login(LoginStudentRequest $request) {
+        $student = Student::query()->where('student_code', $request->student_code)->first();
+        if (!isset($student)) {
+            return $this->returnErrorMessage('Not Found', 404);
+        }
+        else {
+            $token=$student->createToken('student');
+            $data['student']=$student;
+            $data['type']='Bearer';
+            $data['token']=$token->accessToken;
+
+            return $this->returnData('data', $data,'logged in successfully');
+        }
+    }
     public function index(Request $request)
     {
         $students = Student::query();
@@ -79,7 +95,7 @@ class StudentController extends Controller
         if (!Result::query()->where('student_id', $request->student_id)->exists()) {
             $result = Result::query()->create([
                 'score' => $request->score,
-                'student_id' => $request->student_id
+                'student_id' => auth('student')->id()
             ]);
             return $this->returnData('data', $result, 'added result successfully');
         }else {
