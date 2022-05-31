@@ -3,6 +3,9 @@
 application for students exam and manage exams & students.
 <hr> 
 
+### Here is a list of the packages installed:
+<li><a href="https://laravel.com/docs/9.x/passport">laravel passport</a></li>
+
 # Getting started
 ### Installation
 <hr> 
