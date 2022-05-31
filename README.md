@@ -10,6 +10,8 @@ application for students exam and manage exams & students.
 <ul>
 <li>Clone this repository.</li>
 <code>https://github.com/almuhder/quiz-albarakah.git</code>
+<li>must be checkout to back branch </li>
+<code>git checkout back</code>
 <li>copy this command to terminal for install the composer</li>
 <code>composer install</code><br>
 <li>copy this command for generate <code>.env</code> file </li>
