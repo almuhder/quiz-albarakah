@@ -8,7 +8,7 @@ application for students exam and manage exams & students.
 <hr> 
 
 <ul>
-<li>Clone the repository.</li>
+<li>Clone this repository.</li>
 <code>https://github.com/almuhder/quiz-albarakah.git</code>
 <li>copy this command to terminal for install the composer</li>
 <code>composer install</code><br>
