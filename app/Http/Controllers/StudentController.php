@@ -10,7 +10,6 @@ use App\Models\Result;
 use App\Models\Student;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Null_;
 
 class StudentController extends Controller
@@ -28,7 +27,6 @@ class StudentController extends Controller
             return $this->returnErrorMessage('Not Found', 404);
         }
         else {
-
             $token = $student->createToken('student', ['student']);
             $data['student']=$student;
             $data['type']='Bearer';
@@ -37,10 +35,15 @@ class StudentController extends Controller
             return $this->returnData('data', $data,'logged in successfully');
         }
     }
-    public function index()
+    public function index(Request $request)
     {
-        $students = Student::query()->get();
-        return $this->returnData('data', $students, 'List Students');
+        $students = Student::query();
+        $searchByCode = $request->searchByCode;
+        if ($searchByCode !== null) {
+            $students->where('student_code', 'LIKE', '%'.$searchByCode.'%');
+        }
+        $studentQuery = $students->get();
+        return $this->returnData('data', $studentQuery, 'List Students');
     }
 
     public function studentResults() {

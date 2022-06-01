@@ -35,7 +35,7 @@ Route::get('question', [\App\Http\Controllers\QuestionController::class, 'index'
 Route::middleware(['auth:admin','scopes:admin'])->prefix('question')->group(function (){
     Route::put('edit/{questionID}', [\App\Http\Controllers\QuestionController::class, 'update']);
     Route::post('/add', [\App\Http\Controllers\QuestionController::class, 'store']);
-    Route::delete('delete/{product}', [\App\Http\Controllers\QuestionController::class, 'destroy']);
+    Route::delete('delete/{questionID}', [\App\Http\Controllers\QuestionController::class, 'destroy']);
 });
 
 
@@ -47,7 +47,7 @@ Route::middleware(['auth:admin','scopes:admin'])->prefix('type')->group(function
 });
 
 Route::middleware(['auth:admin','scopes:admin'])->prefix('student-code')->group(function (){
-    Route::get('/', [\App\Http\Controllers\StudentController::class, 'index']);
+    Route::post('/', [\App\Http\Controllers\StudentController::class, 'index']);
     Route::get('student-results', [\App\Http\Controllers\StudentController::class, 'studentResults']);
     Route::post('/generate', [\App\Http\Controllers\StudentController::class, 'store']);
     Route::post('/search', [\App\Http\Controllers\StudentController::class, 'search']);
