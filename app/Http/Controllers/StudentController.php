@@ -10,6 +10,7 @@ use App\Models\Result;
 use App\Models\Student;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Null_;
 
 class StudentController extends Controller
@@ -27,7 +28,8 @@ class StudentController extends Controller
             return $this->returnErrorMessage('Not Found', 404);
         }
         else {
-            $token = $student->createToken('student');
+
+            $token = $student->createToken('student', ['student']);
             $data['student']=$student;
             $data['type']='Bearer';
             $data['token']=$token->accessToken;

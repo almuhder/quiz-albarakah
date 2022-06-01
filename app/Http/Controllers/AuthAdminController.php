@@ -43,10 +43,13 @@ use GeneralTrait;
         if (!Hash::check(request('password'), $user->password)) {
             return $this->returnErrorMessage('Incorrect password', 403);
         }
-        $token=$user->createToken('admin');
+
+        $token=$user->createToken('admin', ['admin']);
         $data['admin']=$user;
         $data['type']='Bearer';
         $data['token']=$token->accessToken;
+//        $token = $user->createToken('My Token', ['place-orders'])->accessToken;
+//        ['place-orders']
 
         return $this->returnData('data', $data,'logged in successfully');
     }
