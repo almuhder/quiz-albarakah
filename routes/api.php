@@ -47,7 +47,7 @@ Route::middleware('auth:admin')->prefix('type')->group(function (){
 });
 
 Route::middleware('auth:admin')->prefix('student-code')->group(function (){
-    Route::post('/', [\App\Http\Controllers\StudentController::class, 'index']);
+    Route::get('/', [\App\Http\Controllers\StudentController::class, 'index']);
     Route::get('student-results', [\App\Http\Controllers\StudentController::class, 'studentResults']);
     Route::post('/generate', [\App\Http\Controllers\StudentController::class, 'store']);
     Route::post('/search', [\App\Http\Controllers\StudentController::class, 'search']);

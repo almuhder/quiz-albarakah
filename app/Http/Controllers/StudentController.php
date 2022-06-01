@@ -35,15 +35,10 @@ class StudentController extends Controller
             return $this->returnData('data', $data,'logged in successfully');
         }
     }
-    public function index(Request $request)
+    public function index()
     {
-        $students = Student::query();
-        $searchByCode = $request->searchByCode;
-        if ($searchByCode !== null) {
-            $students->where('student_code', 'LIKE', '%'.$searchByCode.'%');
-        }
-        $studentQuery = $students->get();
-        return $this->returnData('data', $studentQuery, 'List Students');
+        $students = Student::query()->get();
+        return $this->returnData('data', $students, 'List Students');
     }
 
     public function studentResults() {
