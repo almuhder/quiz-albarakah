@@ -27,7 +27,7 @@ class StudentController extends Controller
             return $this->returnErrorMessage('Not Found', 404);
         }
         else {
-            $token=$student->createToken('student');
+            $token = $student->createToken('student');
             $data['student']=$student;
             $data['type']='Bearer';
             $data['token']=$token->accessToken;
