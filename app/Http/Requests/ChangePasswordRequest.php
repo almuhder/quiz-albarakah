@@ -25,7 +25,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'old_password' => 'required|string',
-            'password' =>[
+            'new_password' =>[
                 'required',
                 'string',
                 'min:8',             // must be at least 8 characters in length
