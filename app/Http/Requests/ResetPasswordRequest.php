@@ -29,13 +29,14 @@ class ResetPasswordRequest extends FormRequest
             'password' =>[
                 'required',
                 'string',
+                'confirmed',
                 'min:8',             // must be at least 8 characters in length
                 'max:18',
                 'regex:/[a-z]/',      // must contain at least one lowercase letter
                 'regex:/[0-9]/',      // must contain at least one digit
                 'regex:/[@$!%*#?&]/', // must contain a special character
                 ],
-            'password_confirmation' => 'required|confirmed',
+            'password_confirmation' => 'required',
         ];
     }
 }
