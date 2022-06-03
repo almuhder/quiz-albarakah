@@ -16,9 +16,9 @@ const Result = (props) => {
           :تم الإنتهاء من الإمتحان ، نتيجتك هي
         </p>
         {props.sumResult.map((e, index) => (
-          <div key={index}>
-            <span>{'type    ' + e.type + '   '}</span>
-            <span>{'result  ' + e.sumResult}</span>
+          <div key={index} style={{ fontSize: '20px' }}>
+            <span>{e.type + '  : '}</span>
+            <span>{e.sumResult}</span>
           </div>
         ))}
       </div>

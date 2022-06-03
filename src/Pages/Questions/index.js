@@ -23,7 +23,7 @@ function Questions() {
     if (token) {
       axios
         .get(
-          'http://127.0.0.1:8000/api/question/all',
+          'http://127.0.0.1:8000/api/question',
 
           {
             headers: {

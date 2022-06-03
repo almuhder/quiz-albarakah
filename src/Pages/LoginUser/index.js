@@ -45,7 +45,11 @@ function LoginUser() {
     <div>
       <div
         className="row justify-content-center "
-        style={{ backgroundColor: '#F6F6F6', padding: '60px 0' }}
+        style={{
+          backgroundColor: '#F6F6F6',
+          padding: '60px 0',
+          marginRight: '0px',
+        }}
       >
         <div className="col-3 text-center ">
           <img className="mb-5" src={logo} alt="albarakah"></img>
