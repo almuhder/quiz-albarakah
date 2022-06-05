@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
 use App\Models\Type;
 use App\Traits\GeneralTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
@@ -30,10 +31,19 @@ class TypeController extends Controller
      */
     public function store(StoreTypeRequest $request)
     {
-        $type = Type::query()->create([
-            'type_name'=>$request->type_name,
-        ]);
-        return $this->returnData('data', $type, 'added type success');
+        try {
+            $type = Type::query()->create([
+                'type_name'=>$request->type_name,
+            ]);
+            return $this->returnData('data', $type, 'added type success');
+        }catch (QueryException $exception) {
+            $errorCode = $exception->errorInfo[1];
+            if($errorCode == 1062){
+                return $this->returnErrorMessage('this type already exists', 500);
+            }
+            return $this->returnErrorMessage('input error', 500);
+        }
+
     }
 
     /**
@@ -45,10 +55,19 @@ class TypeController extends Controller
 
     public function update(UpdateTypeRequest $request, Type $typeID)
     {
-        $typeID->update([
-            'type_name'=>$request->type_name,
-        ]);
-        return $this->returnData('data', $typeID, 'updated type success');
+        try {
+            $typeID->update([
+                'type_name'=>$request->type_name,
+            ]);
+            return $this->returnData('data', $typeID, 'updated type success');
+        }catch (QueryException $exception) {
+            $errorCode = $exception->errorInfo[1];
+            if($errorCode == 1062){
+                return $this->returnErrorMessage('this type already exists', 500);
+            }
+            return $this->returnErrorMessage('input error', 500);
+        }
+
     }
 
     /**

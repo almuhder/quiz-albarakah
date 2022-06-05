@@ -58,10 +58,19 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        $student = Student::query()->create([
-            'student_code' => $request->student_code,
-        ]);
-        return $this->returnData('data', $student, 'added student success');
+        try {
+            $student = Student::query()->create([
+                'student_code' => $request->student_code,
+            ]);
+            return $this->returnData('data', $student, 'added student success');
+        }catch (QueryException $exception) {
+            $errorCode = $exception->errorInfo[1];
+            if($errorCode == 1062){
+                return $this->returnErrorMessage('this student already exists', 500);
+            }
+            return $this->returnErrorMessage('input error', 500);
+        }
+
     }
     /**
      * Update the specified resource in storage.
@@ -72,10 +81,19 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, Student $studentID)
     {
-        $studentID->update([
-            'student_code' => $request->student_code,
-        ]);
-        return $this->returnData('data', $studentID, 'updated Student Code success');
+        try {
+            $studentID->update([
+                'student_code' => $request->student_code,
+            ]);
+            return $this->returnData('data', $studentID, 'updated Student Code success');
+        }catch (QueryException $exception) {
+            $errorCode = $exception->errorInfo[1];
+            if($errorCode == 1062){
+                return $this->returnErrorMessage('this student already exists', 500);
+            }
+            return $this->returnErrorMessage('input error', 500);
+        }
+
     }
 
     /**

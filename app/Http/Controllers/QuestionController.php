@@ -31,11 +31,16 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $question = Question::query()->create([
-            'question_value'=>$request->question_value,
-            'type_id'=>$request->type_id,
-        ]);
-        return $this->returnData('data', $question, 'added question success');
+        try {
+            $question = Question::query()->create([
+                'question_value'=>$request->question_value,
+                'type_id'=>$request->type_id,
+            ]);
+            return $this->returnData('data', $question, 'added question success');
+        }catch (\Exception $exception) {
+            return  $exception->getMessage();
+        }
+
     }
 
     /**
