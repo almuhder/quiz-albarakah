@@ -28,7 +28,7 @@ use GeneralTrait;
             'email'=>$request->email,
             'password'=>Hash::make($request->password),
         ]);
-        $token = $admin->createToken('admin');
+        $token = $admin->createToken('admin', ['admin']);
         $data['admin']=$admin;
         $data['type']='Bearer';
         $data['token']=$token->accessToken;

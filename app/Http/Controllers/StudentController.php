@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Result;
 use App\Models\Student;
 use App\Traits\GeneralTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Null_;
 
@@ -86,7 +87,8 @@ class StudentController extends Controller
                 'student_code' => $request->student_code,
             ]);
             return $this->returnData('data', $studentID, 'updated Student Code success');
-        }catch (QueryException $exception) {
+
+        } catch (QueryException $exception) {
             $errorCode = $exception->errorInfo[1];
             if($errorCode == 1062){
                 return $this->returnErrorMessage('this student already exists', 500);
