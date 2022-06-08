@@ -37,7 +37,11 @@ const Timer = () => {
     swal(' لقد انتهى الوقت ', {
       buttons: false,
       timer: 3000,
-    }) && navigate('/')
+    }).then(() => {
+      localStorage.removeItem('student');
+      localStorage.removeItem('token');
+      navigate('/');
+    })
   );
 };
 

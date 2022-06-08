@@ -17,15 +17,6 @@ import CodeIcon from '@mui/icons-material/Code';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import Login from './login';
 import Home from './homepage';
-// const postFilters = [
-//   <TextInput source="q" label="Search" alwaysOn />,
-//   <ReferenceInput source="userId" label="User" reference="users">
-//     <SelectInput optionText="name" />
-//   </ReferenceInput>,
-//   <ReferenceInput source="userId" label="Email" reference="users">
-//     <SelectInput optionText="email" />
-//   </ReferenceInput>,
-// ];
 
 function DashboardAdmin() {
   return (

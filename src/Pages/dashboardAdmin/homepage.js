@@ -2,12 +2,17 @@ import React from 'react';
 import { Divider, Button } from 'antd';
 import logo from '../../logo.png';
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
   const navigate = useNavigate();
   return (
     <div
       className="row justify-content-center "
-      style={{ backgroundColor: '#F6F6F6', padding: '60px 0', height: '100%' }}
+      style={{
+        backgroundColor: '#F6F6F6',
+        padding: '60px 0',
+        height: '100%',
+      }}
     >
       <div className="col-3 text-center ">
         <img className="mb-5" src={logo} alt="albarakah"></img>

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 const Finished = (props) => {
-  const [score, setScore] = useState();
   const navigate = useNavigate();
   const student_id = localStorage.getItem('student');
   const token = localStorage.getItem('token');
@@ -35,7 +34,8 @@ const Finished = (props) => {
       )
       .then((res) => {
         if (res.data.status === true) {
-          localStorage.clear();
+          localStorage.removeItem('student');
+          localStorage.removeItem('token');
           swal({
             title: '! انتهينا',
             text: 'سوف نعرض لك النتيجة ',
@@ -45,7 +45,6 @@ const Finished = (props) => {
             props.getSumResult(Result);
           });
         }
-        // res.data.status === false
       })
       .catch((error) => {
         if (
@@ -58,6 +57,8 @@ const Finished = (props) => {
             icon: 'error',
             button: ' حسناً',
           }).then((e) => {
+            localStorage.removeItem('student');
+            localStorage.removeItem('token');
             navigate('/');
           });
         }
@@ -69,13 +70,13 @@ const Finished = (props) => {
     var type = '';
     var result = '';
     var score = '';
-    Result.map((e, id) => {
+    Result.map((e) => {
       type = e.type;
       result = e.sumResult;
       score += type;
       score += result;
     });
-    setScore(score);
+    svaeResult(score, student_id);
   };
 
   // CALC SUM OF RESULR FOR EVERY QUESTION AND ADD IT ON DATABASE
@@ -91,7 +92,6 @@ const Finished = (props) => {
       });
     });
     resultToString();
-    svaeResult(score, student_id);
   };
 
   return (

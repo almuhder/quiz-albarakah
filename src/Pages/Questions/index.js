@@ -11,12 +11,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Timer from '../../Component/countDown';
 
-// GET qUESTIONS FROM SERVER
 function Questions() {
   const [isloading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-
+  //  token user
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -35,13 +34,11 @@ function Questions() {
           const questiones = res.data;
           setQuestions(questiones.data);
           setLoading(false);
-
-          // console.log(res.data.data[0].question_value);
         })
-        .catch(function (error) {
-          // console.log('Error', error.message);
-        });
-    } else {
+        .catch(function (error) {});
+    }
+    // then not logged in user
+    else {
       swal({
         title: '! خطأ',
         text: 'يجب عليك تسجيل الدخول',
