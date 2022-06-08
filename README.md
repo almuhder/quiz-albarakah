@@ -4,31 +4,46 @@ application for students exam and manage exams & students.
 <hr> 
 
 ### Here is a list of the packages installed:
-<li><a href="https://laravel.com/docs/9.x/passport">laravel passport</a></li>
+- [laravel passport](https://laravel.com/docs/9.x/passport).
 
 # Getting started
 ### Installation
 <hr> 
 
-<ul>
-<li>Clone this repository.</li>
-<code>https://github.com/almuhder/quiz-albarakah.git</code>
-<li>must be checkout to back branch </li>
-<code>git checkout back</code>
-<li>copy this command to terminal for install the composer</li>
-<code>composer install</code><br>
-<li>copy this command for generate <code>.env</code> file </li>
-<code>cp .env.example .env </code><br>
-Do not forget to create a database with the same name in <code>.env</code> file
-<li>copy this command </li>
-<code>php artisan migrate</code>
-<li>Then run <code>php artisan passport:install</code></li>
-<li>Generate a new application key</li>
-<code>php artisan key:generate</code>
-<li>Start the local server</li>
-<code>php artisan serve </code>
+
+- Clone this repository.
+```
+git clone https://github.com/almuhder/quiz-albarakah.git
+```
+- must be checkout to back branch.
+``` 
+git checkout back
+```
+- copy this command to terminal for install the composer.
+```
+composer install
+```
+- copy this command for generate <code>.env</code> file .
+```
+cp .env.example .env 
+```
+### Don't forget to create a database with the same name in <code>.env</code> file
+- run this commands .
+``` 
+php artisan migrate
+php artisan passport:install
+```
+- Generate a new application key.
+```
+php artisan key:generate
+```
+- Start the local server.
+```
+php artisan serve 
+```
+#### You can download the front end side (react js) from here : [quiz-albarakah](https://github.com/almuhder/quiz-albarakah/tree/front)
 <hr>
 
 ## Now You Can Use This App 
-</ul>
+
 
