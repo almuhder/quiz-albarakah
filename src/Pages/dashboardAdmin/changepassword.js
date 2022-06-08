@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 function ChangePassword() {
   const navigate = useNavigate();
-
+  // HANDLEING INPUTS
   const hundleOldPassword = useRef();
   const hundleNewPassword = useRef();
-
+  // CHANGE PASSWORD
   const changepassword = async () => {
     const token = localStorage.getItem('tokenA');
     await axios
@@ -54,7 +54,7 @@ function ChangePassword() {
             icon: 'error',
             button: 'حسناً',
           }).then((e) => {
-            navigate('/admin');
+            navigate('/admin/login');
           });
         } else {
           swal({
@@ -99,7 +99,7 @@ function ChangePassword() {
                 ref={hundleOldPassword}
                 value=""
                 type={'password'}
-                className="mb-4"
+                className="mt-4"
                 placeholder="  كلمة المرور الحالية"
                 style={{ textAlign: 'right' }}
               />
@@ -108,13 +108,26 @@ function ChangePassword() {
               name="newPassword"
               rules={[
                 { required: true, message: ' ! يجب ادخال كلمة المرور الجديدة' },
+                {
+                  pattern: '^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})',
+                  message:
+                    '  ! يجب ان تحتوي كلمة المرور على احرف وارقام ورموز ',
+                },
+                {
+                  min: 8,
+                  message: 'يجب ان لا تقل كلمة المرور عن 8 محارف',
+                },
+                {
+                  max: 18,
+                  message: 'يجب ان لا تزيد كلمة المرور عن 18 محرف',
+                },
               ]}
             >
               <Input
                 ref={hundleNewPassword}
                 value=""
                 type={'password'}
-                className="mb-4"
+                className="mt-4"
                 placeholder=" كلمة المرور الجديدة"
                 style={{ textAlign: 'right' }}
               />
@@ -125,6 +138,7 @@ function ChangePassword() {
                 type="primary"
                 htmlType="submit"
                 block
+                className="mt-4"
                 style={{ backgroundColor: '#E1901E', border: 'none' }}
               >
                 تأكيد

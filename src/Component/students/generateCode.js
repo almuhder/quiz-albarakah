@@ -1,10 +1,13 @@
 import React from 'react';
-import { Create, SimpleForm, TextInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, required } from 'react-admin';
 
 const GeneratCode = (props) => (
   <Create {...props} title="Genertae New Code" redirect="list">
     <SimpleForm>
-      <TextInput multiline source="student_code" />
+      <TextInput
+        source="student_code"
+        validate={required(' ! يرجى ادخال الكود')}
+      />
     </SimpleForm>
   </Create>
 );

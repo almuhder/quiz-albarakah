@@ -1,10 +1,14 @@
 import React from 'react';
-import { Create, SimpleForm, TextInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, required } from 'react-admin';
 
 const CreatType = (props) => (
   <Create {...props} redirect="list">
     <SimpleForm>
-      <TextInput multiline source="type_name" />
+      <TextInput
+        source="type_name"
+        label="Type"
+        validate={required(' ! يرجى ادخال النوع')}
+      />
     </SimpleForm>
   </Create>
 );

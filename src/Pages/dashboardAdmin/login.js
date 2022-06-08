@@ -8,11 +8,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
+  // HANDLEING INPUTS
   const hundleEmail = useRef();
   const hundlePassword = useRef();
 
   const [loadings, setLoadings] = useState([]);
 
+  // LOADING BUTTON (FORGET PASSWORD)
   const enterLoading = (index) => {
     setLoadings((prevLoadings) => {
       const newLoadings = [...prevLoadings];
@@ -21,7 +23,7 @@ function Login() {
     });
   };
 
-  // forget
+  // FORGET PASSWORD FOR ADMIN
   const forget = async () => {
     enterLoading(0);
     const email = hundleEmail.current.input.value;
@@ -41,7 +43,6 @@ function Login() {
             navigate('/admin/reset');
           });
         }
-        console.log(res);
       })
       .catch((err) => {
         setLoadings((prevLoadings) => {
@@ -73,11 +74,10 @@ function Login() {
             button: 'حسناً',
           });
         }
-        console.log(err);
       });
   };
 
-  // LOGIN
+  // LOGIN ADMIN
   const login = async () => {
     await axios
       .post('http://127.0.0.1:8000/api/login', {
@@ -139,13 +139,19 @@ function Login() {
           <Form name="basic" onFinish={login}>
             <Form.Item
               name="email"
-              rules={[{ required: true, message: '! يجب ادخال الايميل' }]}
+              rules={[
+                { required: true, message: '! يجب ادخال الايميل' },
+                {
+                  type: 'email',
+                  message: ' ادخال غير صحيح , يجب ادخال ايميل',
+                },
+              ]}
             >
               <Input
                 ref={hundleEmail}
                 type={'email'}
                 value=""
-                className="mb-4"
+                className="mt-4"
                 placeholder="الايميل"
                 style={{ textAlign: 'right' }}
               />
@@ -158,7 +164,7 @@ function Login() {
                 ref={hundlePassword}
                 value=""
                 type={'password'}
-                className="mb-4"
+                className="mt-4"
                 placeholder=" كلمة المرور"
                 style={{ textAlign: 'right' }}
               />
@@ -169,21 +175,14 @@ function Login() {
                 type="primary"
                 htmlType="submit"
                 block
+                className="mt-4"
                 style={{ backgroundColor: '#E1901E', border: 'none' }}
               >
                 دخول
               </Button>
             </Form.Item>
           </Form>
-          {/* <Button
-            type="primary"
-            htmlType="submit"
-            block
-            onClick={forget}
-            style={{ backgroundColor: '#E1901E', border: 'none' }}
-          >
-            forget
-          </Button> */}
+
           <Button
             type="primary"
             className="mb-3"

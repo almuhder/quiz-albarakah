@@ -64,7 +64,7 @@ function LoginUser() {
           <Form name="basic" onFinish={login}>
             <Form.Item
               name="usercode"
-              rules={[{ required: true, message: 'Please input your code!' }]}
+              rules={[{ required: true, message: ' ! يرجى ادخال الكود' }]}
             >
               <Input
                 ref={hundleUserCode}

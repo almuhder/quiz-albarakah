@@ -10,7 +10,7 @@ function SignUp() {
   const hundleEmail = useRef();
   const hundlePassword = useRef();
 
-  // LOGIN
+  // SIGN UP ADMIN
   const signup = async () => {
     await axios
       .post('http://127.0.0.1:8000/api/signup', {
@@ -77,26 +77,47 @@ function SignUp() {
           <Form name="basic" onFinish={signup}>
             <Form.Item
               name="email"
-              rules={[{ required: true, message: '! يجب ادخال الايميل' }]}
+              rules={[
+                { required: true, message: '! يجب ادخال الايميل' },
+                {
+                  type: 'email',
+                  message: ' ادخال غير صحيح , يجب ادخال ايميل',
+                },
+              ]}
             >
               <Input
                 ref={hundleEmail}
                 type={'email'}
                 value=""
-                className="mb-4"
+                className="mt-4"
                 placeholder="الايميل"
                 style={{ textAlign: 'right' }}
               />
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: ' ! يجب ادخال كلمة المرور' }]}
+              rules={[
+                { required: true, message: ' ! يجب ادخال كلمة المرور' },
+                {
+                  pattern: '^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})',
+                  message:
+                    '  ! يجب ان تحتوي كلمة المرور على احرف وارقام ورموز ',
+                },
+                {
+                  min: 8,
+                  message: 'يجب ان لا تقل كلمة المرور عن 8 محارف',
+                },
+                {
+                  max: 18,
+                  message: 'يجب ان لا تزيد كلمة المرور عن 18 محرف',
+                },
+              ]}
             >
               <Input
                 ref={hundlePassword}
                 value=""
                 type={'password'}
-                className="mb-4"
+                className="mt-4"
                 placeholder=" كلمة المرور"
                 style={{ textAlign: 'right' }}
               />
@@ -107,6 +128,7 @@ function SignUp() {
                 type="primary"
                 htmlType="submit"
                 block
+                className="mt-4"
                 style={{ backgroundColor: '#E1901E', border: 'none' }}
               >
                 التسجيل

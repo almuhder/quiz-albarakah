@@ -7,12 +7,15 @@ import { useNavigate } from 'react-router-dom';
 
 function ResetPassword() {
   const navigate = useNavigate();
+  // HANDLEING INPUTS
   const hundleEmail = useRef();
   const hundlePassword = useRef();
   const hundleConfirmPassword = useRef();
   const hundleToken = useRef();
+
+  // EMAIL ADMIN FOR RESET IT
   const email = localStorage.getItem('emailA');
-  // LOGIN
+  // RESET PASSWORD
   const reset = async () => {
     await axios
       .post('http://127.0.0.1:8000/api/reset-password', {
@@ -23,9 +26,6 @@ function ResetPassword() {
       })
       .then((res) => {
         if (res.data.status) {
-          //   localStorage.setItem('tokenA', res.data.data.token);
-          //   localStorage.setItem('student', res.data.data.student.id);
-
           swal({
             title: '! نجاح',
             text: 'تم اعادة تعيين كلمة المرور بنجاح',
@@ -36,7 +36,6 @@ function ResetPassword() {
             navigate('/admin');
           });
         }
-        console.log(res);
       })
       .catch((err) => {
         if (
@@ -48,7 +47,7 @@ function ResetPassword() {
             icon: 'error',
             button: 'حسناً',
           }).then((e) => {
-            // navigate('/admin/forget');
+            navigate('/admin/login');
           });
         } else if (
           'errors' in err.response.data &&
@@ -83,7 +82,6 @@ function ResetPassword() {
             button: 'حسناً',
           });
         }
-        console.log(err);
       });
   };
 
@@ -114,6 +112,7 @@ function ResetPassword() {
               rules={[{ required: true, message: '! يجب ادخال الايميل' }]}
             >
               <Input
+                disabled
                 ref={hundleEmail}
                 type={'email'}
                 value=""
@@ -124,7 +123,22 @@ function ResetPassword() {
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: ' ! يجب ادخال كلمة المرور' }]}
+              rules={[
+                { required: true, message: ' ! يجب ادخال كلمة المرور' },
+                {
+                  pattern: '^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})',
+                  message:
+                    '  ! يجب ان تحتوي كلمة المرور على احرف وارقام ورموز ',
+                },
+                {
+                  min: 8,
+                  message: 'يجب ان لا تقل كلمة المرور عن 8 محارف',
+                },
+                {
+                  max: 18,
+                  message: 'يجب ان لا تزيد كلمة المرور عن 18 محرف',
+                },
+              ]}
             >
               <Input
                 ref={hundlePassword}
@@ -137,7 +151,17 @@ function ResetPassword() {
             </Form.Item>
             <Form.Item
               name="confirmPassword"
-              rules={[{ required: true, message: ' ! يجب ادخال كلمة المرور' }]}
+              rules={[
+                { required: true, message: ' ! يجب ادخال كلمة المرور' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('تأكيد كلمة المرور خاطئ'));
+                  },
+                }),
+              ]}
             >
               <Input
                 ref={hundleConfirmPassword}
