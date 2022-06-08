@@ -1,24 +1,6 @@
 import axios from 'axios';
-
+import swal from 'sweetalert';
 export default {
-  // called when the user attempts to log in
-  login: async ({ username, password }) => {
-    await axios
-      .post('http://127.0.0.1:8000/api/login', {
-        email: username,
-        password: password,
-      })
-      .then(function (response) {
-        console.log(response.data.data.token);
-        localStorage.setItem('tokenA', response.data.data.token);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    // accept all username/password combinations
-    // return Promise.resolve();
-  },
   // called when the user clicks on the logout button
   logout: async () => {
     const token = localStorage.getItem('tokenA');
@@ -31,17 +13,21 @@ export default {
       .then(function (response) {
         localStorage.removeItem('tokenA');
       })
-      .catch(function (error) {
-        console.log(error);
-      });
-    // localStorage.removeItem('tokenA');
+      .catch(function (error) {});
+
     return Promise.resolve();
   },
   // called when the API returns an error
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
-      localStorage.removeItem('tokenA');
-      return Promise.reject();
+      swal({
+        title: '! خطأ',
+        text: 'يجب تسجيل الدخول ',
+        icon: 'error',
+        button: 'حسناً',
+      }).then((e) => {
+        return Promise.reject();
+      });
     }
     return Promise.resolve();
   },

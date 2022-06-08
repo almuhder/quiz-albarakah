@@ -1,10 +1,14 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
+import axios from 'axios';
+import swal from 'sweetalert';
 
+// api url
 const apiUrl = 'http://127.0.0.1:8000/api/';
-// const httpClient = fetchUtils.fetchJson;
+
 var create = '';
 var method = '';
+
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: 'application/json' });
@@ -15,6 +19,7 @@ const httpClient = (url, options = {}) => {
 };
 
 export default {
+  // get list of items
   getList: async (resource, params) => {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
@@ -26,7 +31,7 @@ export default {
     resource === 'student-code' ? (method = 'POST') : (method = 'GET');
 
     const url = `${apiUrl}${resource}?${stringify(query)}`;
-    // const token = localStorage.getItem('tokenA');
+
     return await httpClient(url, {
       method: method,
     }).then(({ headers, json }) => ({
@@ -35,7 +40,7 @@ export default {
       // parseInt(headers.get('content-range').split('/').pop(), 10)
     }));
   },
-
+  // git one of items
   getOne: async (resource, params) =>
     (resource === 'student-code' ? (method = 'POST') : (method = 'GET')) &&
     (await httpClient(`${apiUrl}${resource}`, {
@@ -44,6 +49,7 @@ export default {
       data: json.data.find((e) => (e.id == params.id ? { e } : '')),
     }))),
 
+  // git many of items
   getMany: async (resource, params) => {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
@@ -70,12 +76,33 @@ export default {
       total: parseInt(headers.get('content-range').split('/').pop(), 10),
     }));
   },
-
-  update: async (resource, params) =>
-    await httpClient(`${apiUrl}${resource}/edit/${params.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json.data })),
+  // edit item
+  update: async (resource, params) => {
+    const data = {};
+    const token = localStorage.getItem('tokenA');
+    await axios({
+      method: 'put',
+      url: `${apiUrl}${resource}/edit/${params.id}`,
+      data: params.data,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => (data['data'] = res.data.data))
+      .catch((err) => {
+        if (
+          (err.response.status === 500 &&
+            err.response.data.message === 'this type already exists') ||
+          err.response.data.message === 'this student already exists'
+        ) {
+          swal({
+            title: '! خطأ',
+            text: 'لا يمكن تكرار هذا الحقل ',
+            icon: 'error',
+            button: 'حسناً',
+          });
+        }
+      });
+    return data;
+  },
 
   // updateMany: async (resource, params) => {
   //   const query = {
@@ -87,19 +114,50 @@ export default {
   //   }).then(({ json }) => ({ data: json.data }));
   // },
 
-  create: async (resource, params) =>
+  //  create new item
+  create: async (resource, params) => {
+    const data = {};
+    const token = localStorage.getItem('tokenA');
     (resource === 'student-code' ? (create = 'generate') : (create = 'add')) &&
-    (await httpClient(`${apiUrl}${resource}/${create}`, {
-      method: 'POST',
-      body: JSON.stringify(params.data),
-    }).then(({ json }) => ({
-      data: { ...params.data, id: json.data.id },
-    }))),
+      (await axios
+        .post(`${apiUrl}${resource}/${create}`, params.data, {
+          headers: {
+            Authorization: `Bearer  ${token}`,
+          },
+        })
+        .then(
+          (res) => (data['data'] = { ...params.data, id: res.data.data.id })
+        )
+        .catch((err) => {
+          if (
+            (err.response.status === 500 &&
+              err.response.data.message === 'this type already exists') ||
+            err.response.data.message === 'this student already exists'
+          ) {
+            swal({
+              title: '! خطأ',
+              text: 'لا يمكن تكرار هذا الحقل ',
+              icon: 'error',
+              button: 'حسناً',
+            });
+          }
+        }));
+    return data;
+  },
 
-  delete: async (resource, params) =>
-    await httpClient(`${apiUrl}${resource}/delete/${params.id}`, {
-      method: 'DELETE',
-    }).then(({ json }) => ({ data: json.data })),
+  // delete item
+  delete: async (resource, params) => {
+    const data = {};
+    const token = localStorage.getItem('tokenA');
+    await axios
+      .delete(`${apiUrl}${resource}/delete/${params.id}`, {
+        headers: {
+          Authorization: `Bearer  ${token}`,
+        },
+      })
+      .then((res) => (data['data'] = res.data));
+    return data;
+  },
 
   // deleteMany: async (resource, params) => {
   //   const query = {
