@@ -24,7 +24,8 @@ class UpdateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_code' => 'required|string',
+//            'student_code' => 'required|string',
+        'status' => 'boolean'
         ];
     }
 }

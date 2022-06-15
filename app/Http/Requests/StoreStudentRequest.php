@@ -24,7 +24,8 @@ class StoreStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_code' => 'required|string',
+            'student_number' => 'required|string',
+            'status' => 'boolean',
         ];
     }
 }

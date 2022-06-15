@@ -26,6 +26,8 @@ class StudentController extends Controller
         $student = Student::query()->where('student_code', $request->student_code)->first();
         if (!isset($student)) {
             return $this->returnErrorMessage('Not Found', 404);
+        } elseif ($student->status) {
+            return $this->returnErrorMessage('Sorry, you take the quiz before', 403);
         }
         else {
             $token = $student->createToken('student', ['student']);
@@ -39,9 +41,9 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $students = Student::query();
-        $searchByCode = $request->searchByCode;
-        if ($searchByCode !== null) {
-            $students->where('student_code', 'LIKE', '%'.$searchByCode.'%');
+        $searchByNum = $request->searchByNumber;
+        if ($searchByNum !== null) {
+            $students->where('student_number', 'LIKE', '%'.$searchByNum.'%');
         }
         $studentQuery = $students->get();
         return $this->returnData('data', $studentQuery, 'List Students');
@@ -60,9 +62,15 @@ class StudentController extends Controller
     public function store(StoreStudentRequest $request)
     {
         try {
-            $student = Student::query()->create([
-                'student_code' => $request->student_code,
+        $student = Student::query()->create([
+                'student_number' => $request->student_number,
+                'student_code' => 'S' . rand(10, 99),
+                'status' => $request->status
             ]);
+            $student->update([
+                'student_code' => 'S'.$student->id  . rand(10, 99)
+            ]);
+
             return $this->returnData('data', $student, 'added student success');
         }catch (QueryException $exception) {
             $errorCode = $exception->errorInfo[1];
@@ -84,7 +92,8 @@ class StudentController extends Controller
     {
         try {
             $studentID->update([
-                'student_code' => $request->student_code,
+                'student_number' => $request->studentNumber,
+                'status' => $request->status,
             ]);
             return $this->returnData('data', $studentID, 'updated Student Code success');
 

@@ -13,7 +13,9 @@ class Student extends Authenticatable
 
 
     protected $fillable = [
-        'student_code'
+        'student_code',
+        'student_number',
+        'status'
     ];
 
     public function results() {
