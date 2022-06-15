@@ -106,6 +106,22 @@ class StudentController extends Controller
         }
 
     }
+    public function updateStatus(Request $request, Student $studentID)
+    {
+        $request->validate([
+            'status' => 'boolean|required'
+        ]);
+        try {
+            $studentID->update([
+                'status' => $request->status,
+            ]);
+            return $this->returnData('data', $studentID, 'updated Status success');
+
+        } catch (QueryException $exception) {
+            return $this->returnErrorMessage('input error', 500);
+        }
+
+    }
 
     /**
      * Remove the specified resource from storage.
