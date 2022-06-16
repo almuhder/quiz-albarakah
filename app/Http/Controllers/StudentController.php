@@ -65,7 +65,7 @@ class StudentController extends Controller
         $student = Student::query()->create([
                 'student_number' => $request->student_number,
                 'student_code' => 'S' . rand(10, 99),
-                'status' => $request->status
+                'status' => 0
             ]);
             $student->update([
                 'student_code' => 'S'.$student->id  . rand(10, 99)
@@ -108,7 +108,6 @@ class StudentController extends Controller
     }
     public function updateStatus(Student $studentID)
     {
-        try {
             if ($studentID->status)
             {
                 $studentID->update([
@@ -119,12 +118,12 @@ class StudentController extends Controller
                     'status' => 1
                 ]);
             }
-            return $this->returnData('data', $studentID, 'updated Status To '. $studentID->status . ' success');
-
-        } catch (QueryException $exception) {
-            return $this->returnErrorMessage('input error', 500);
-        }
-
+            return $this->
+            returnData(
+                'data',
+                $studentID,
+                'updated Status To '. $studentID->status . ' success'
+            );
     }
 
     /**
@@ -145,6 +144,10 @@ class StudentController extends Controller
             $result = Result::query()->create([
                 'score' => $request->score,
                 'student_id' => auth('student')->id()
+            ]);
+            $user = auth('student')->user();
+            $user->update([
+                'status' => 1
             ]);
             return $this->returnData('data', $result, 'added result successfully');
         }else {

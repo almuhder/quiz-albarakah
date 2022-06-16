@@ -25,7 +25,7 @@ class UpdateStudentRequest extends FormRequest
     {
         return [
             'student_number' => 'required|string',
-            'status' => 'boolean'
+//            'status' => 'boolean'
         ];
     }
 }
