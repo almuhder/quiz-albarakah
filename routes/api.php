@@ -52,7 +52,7 @@ Route::middleware(['auth:admin','scopes:admin'])->prefix('student-code')->group(
     Route::post('/generate', [\App\Http\Controllers\StudentController::class, 'store']);
     Route::post('/search', [\App\Http\Controllers\StudentController::class, 'search']);
     Route::put('edit/{studentID}', [\App\Http\Controllers\StudentController::class, 'update']);
-    Route::put('edit/{studentID}', [\App\Http\Controllers\StudentController::class, 'updateStatus']);
+    Route::put('edit-status/{studentID}', [\App\Http\Controllers\StudentController::class, 'updateStatus']);
     Route::delete('delete/{studentID}', [\App\Http\Controllers\StudentController::class, 'destroy']);
 });
 Route::post('store-result', [\App\Http\Controllers\StudentController::class, 'storeResult'])
