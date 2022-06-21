@@ -6,12 +6,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function ResetPassword() {
+  // get token from url
+  const url = window.location.search;
+  const urlParams = new URLSearchParams(url);
+  const token = urlParams.get('token');
+
   const navigate = useNavigate();
   // HANDLEING INPUTS
   const hundleEmail = useRef();
   const hundlePassword = useRef();
   const hundleConfirmPassword = useRef();
-  const hundleToken = useRef();
 
   // EMAIL ADMIN FOR RESET IT
   const email = localStorage.getItem('emailA');
@@ -22,7 +26,7 @@ function ResetPassword() {
         email: hundleEmail.current.input.value,
         password: hundlePassword.current.input.value,
         password_confirmation: hundleConfirmPassword.current.input.value,
-        token: hundleToken.current.input.value,
+        token: token,
       })
       .then((res) => {
         if (res.data.status) {
@@ -33,7 +37,7 @@ function ResetPassword() {
             button: ' حسناً',
           }).then((e) => {
             localStorage.removeItem('emailA');
-            navigate('/admin');
+            navigate('/admin/login');
           });
         }
       })
@@ -43,7 +47,7 @@ function ResetPassword() {
         ) {
           swal({
             title: '! خطأ',
-            text: ' اصبح غير فعال اعد المحاولة مجددا token',
+            text: ' انتهت الفنرة المحددة لاعادة التعيين, اعد المحاولة مجددا ',
             icon: 'error',
             button: 'حسناً',
           }).then((e) => {
@@ -169,19 +173,6 @@ function ResetPassword() {
                 type={'password'}
                 className="mt-4"
                 placeholder="تاكيد كلمة المرور"
-                style={{ textAlign: 'right' }}
-              />
-            </Form.Item>
-            <Form.Item
-              name="token"
-              rules={[{ required: true, message: ' !token يجب ادخال  ' }]}
-            >
-              <Input
-                ref={hundleToken}
-                value=""
-                type={'text'}
-                className="mt-4"
-                placeholder=" token"
                 style={{ textAlign: 'right' }}
               />
             </Form.Item>
