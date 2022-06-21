@@ -6,14 +6,14 @@ const Footer = () => {
       className="row mg-0 container pt-2 pb-2 align-items-center "
       style={{ direction: 'rtl', fontSize: '14px', color: '#9B8777' }}
     >
-      <div className="col-1 text-right  ">
+      <div className="col-md-1 col-sm-2 col-2 text-right  ">
         <img src={logo} alt="albarakah" style={{ width: '70%' }}></img>
       </div>
-      <div className="col-4 text-right ">
+      <div className="col-md-5 col-sm-5 col-5 text-center ">
         © جمعية البركة للتنمية الاجتماعية 2021
       </div>
 
-      <div className="col-6 text-center">
+      <div className="col-md-6 col-sm-5 col-5 text-center">
         <a href="#" style={{ color: '#9B8777' }}>
           اتصل بنا
         </a>

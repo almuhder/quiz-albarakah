@@ -66,7 +66,6 @@ const Question = (props) => {
             calcResult(question_data.type.type_name, question_data.id, 0);
             e.target.style.backgroundColor = '#E1901E';
             e.target.style.color = 'white';
-            console.log(e.target.style.color);
           }}
           style={{ backgroundColor: '#F6F6F6', width: '15%', margin: '25px' }}
           danger
