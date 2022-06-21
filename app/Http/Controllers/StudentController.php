@@ -153,7 +153,8 @@ class StudentController extends Controller
         $student = auth('student')->user();
         if ($student->status == 0) {
             $result = Result::query()->where('student_id', $student->id)->first();
-            if (!$result->exists()) {
+//            dd(isset($result));
+            if (! isset($result)) {
                 $result = Result::query()->create([
                     'score' => $request->score,
                     'student_id' => auth('student')->id(),
@@ -161,7 +162,7 @@ class StudentController extends Controller
                 $student->update([
                     'status' => 1
                 ]);
-                return $this->returnData('data', $result, 'added result successfully');
+                 return $this->returnData('data', $result, 'added result successfully');
             }else {
                 $result->update([
                     'score' => $request->score,
