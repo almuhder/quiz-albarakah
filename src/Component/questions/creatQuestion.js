@@ -6,11 +6,21 @@ import {
   SelectInput,
   TextInput,
   required,
+  SaveButton,
+  DeleteButton,
+  Toolbar,
 } from 'react-admin';
+
+const PostEditToolbar = () => (
+  <Toolbar>
+    <SaveButton label="create question" icon={''} />
+    <DeleteButton />
+  </Toolbar>
+);
 
 const CreatQuestion = (props) => (
   <Create {...props} redirect="list">
-    <SimpleForm>
+    <SimpleForm toolbar={<PostEditToolbar />}>
       <TextInput
         multiline
         source="question_value"
