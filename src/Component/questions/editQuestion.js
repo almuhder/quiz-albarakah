@@ -6,11 +6,20 @@ import {
   SelectInput,
   TextInput,
   required,
+  SaveButton,
+  DeleteButton,
+  Toolbar,
 } from 'react-admin';
 
+const PostEditToolbar = () => (
+  <Toolbar className="row" sx={{ justifyContent: 'space-between' }}>
+    <SaveButton className="col-2" label="edit question" icon={''} />
+    <DeleteButton className="col-1" />
+  </Toolbar>
+);
 const EditQuestion = (props) => (
   <Edit {...props} title="Edit Question">
-    <SimpleForm>
+    <SimpleForm toolbar={<PostEditToolbar />}>
       <TextInput source="id" disabled />
       <TextInput
         multiline
