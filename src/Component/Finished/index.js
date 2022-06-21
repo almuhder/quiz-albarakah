@@ -2,21 +2,19 @@ import React from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom';
 
 const Finished = (props) => {
-  const navigate = useNavigate();
   const student_id = localStorage.getItem('student');
   const token = localStorage.getItem('token');
 
   // GET ALL TYPES
   let types = [];
-  {
-    props.result.map((e) => types.push(e.t));
-    types = types.filter((e, index) => {
-      return types.indexOf(e) === index;
-    });
-  }
+
+  props.result.map((e) => types.push(e.t));
+  types = types.filter((e, index) => {
+    return types.indexOf(e) === index;
+  });
+
   //   SAVE RESULT ON DATABASE
   const svaeResult = async (score, student_id) => {
     await axios
@@ -45,23 +43,6 @@ const Finished = (props) => {
             props.getSumResult(Result);
           });
         }
-      })
-      .catch((error) => {
-        if (
-          error.response.data.status === false &&
-          error.response.data.message === 'already has result'
-        ) {
-          swal({
-            title: '! خطأ',
-            text: 'لقد انجزت الإختبار مسبقا',
-            icon: 'error',
-            button: ' حسناً',
-          }).then((e) => {
-            localStorage.removeItem('student');
-            localStorage.removeItem('token');
-            navigate('/');
-          });
-        }
       });
   };
 
@@ -75,6 +56,7 @@ const Finished = (props) => {
       result = e.sumResult;
       score += type;
       score += result;
+      return 1;
     });
     svaeResult(score, student_id);
   };
@@ -90,6 +72,7 @@ const Finished = (props) => {
         type: t,
         sumResult: sum,
       });
+      return 1;
     });
     resultToString();
   };
