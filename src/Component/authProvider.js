@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
+
 export default {
   // called when the user clicks on the logout button
   logout: async () => {
@@ -20,6 +22,7 @@ export default {
   // called when the API returns an error
   checkError: ({ status }) => {
     if (status === 401 || status === 403) {
+      localStorage.removeItem('tokenA');
       swal({
         title: '! خطأ',
         text: 'يجب تسجيل الدخول ',
@@ -28,6 +31,7 @@ export default {
       }).then((e) => {
         return Promise.reject();
       });
+      return Promise.reject();
     }
     return Promise.resolve();
   },

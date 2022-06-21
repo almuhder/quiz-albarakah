@@ -38,6 +38,13 @@ function LoginUser() {
             icon: 'error',
             button: 'حسناً',
           });
+        if (err.response.data.message === 'Sorry, you take the quiz before')
+          swal({
+            title: '! خطأ',
+            text: ' لقد انجزت الإختبار مسبقا, اطلب من الادارة تفعيل الكود الخاص بك',
+            icon: 'error',
+            button: ' حسناً',
+          });
       });
   };
 
@@ -51,7 +58,7 @@ function LoginUser() {
           marginRight: '0px',
         }}
       >
-        <div className="col-3 text-center ">
+        <div className="col-md-3 col-sm-5 col-6 text-center ">
           <img className="mb-5" src={logo} alt="albarakah"></img>
           <h5 style={{ color: '#A2A2A2', fontWeight: 'normal' }}>
             الدخول لأداة تحديد الميول

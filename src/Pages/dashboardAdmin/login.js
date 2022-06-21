@@ -36,11 +36,9 @@ function Login() {
           localStorage.setItem('emailA', email);
           swal({
             title: '! نجاح',
-            text: 'تم ارسال الكود الى الايميل ',
+            text: ' تم ارسال الكود الى الايميل الخاص بك',
             icon: 'success',
             button: 'حسناً',
-          }).then((e) => {
-            navigate('/admin/reset');
           });
         }
       })
@@ -98,7 +96,10 @@ function Login() {
         }
       })
       .catch(function (error) {
-        if (error.response.data.message === 'Incorrect password') {
+        if (
+          error.response.data.message === 'Incorrect password' ||
+          error.response.data.message === 'The given data was invalid.'
+        ) {
           swal({
             title: '! خطأ',
             text: 'كلمة المرور غير صحيحة',
