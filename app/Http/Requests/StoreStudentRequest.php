@@ -25,7 +25,7 @@ class StoreStudentRequest extends FormRequest
     {
         return [
             'student_number' => 'required|string',
-            'status' => 'boolean',
+//            'status' => 'boolean',
         ];
     }
 }
