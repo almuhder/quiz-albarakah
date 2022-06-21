@@ -102,7 +102,7 @@ class StudentController extends Controller
     {
         try {
             $studentID->update([
-                'student_number' => $request->studentNumber,
+                'student_number' => $request->student_number,
             ]);
             return $this->returnData('data', $studentID, 'updated Student Code success');
 
