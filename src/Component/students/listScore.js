@@ -12,7 +12,7 @@ import {
 export const ListScore = (props) => (
   <List title={'Resultes'} {...props}>
     <Datagrid>
-      <TextField source="id" label="ID" />
+      <TextField source="student_number" label="Student Number" />
       <TextField source="student_code" label="Student Code" />
       <ArrayField source="results" label="Results">
         <SingleFieldList>

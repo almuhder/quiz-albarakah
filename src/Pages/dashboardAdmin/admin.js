@@ -8,7 +8,6 @@ import CreateType from '../../Component/types/createType';
 import ListType from '../../Component/types/listTypes';
 import EditType from '../../Component/types/editType';
 import ListCode from '../../Component/students/listCode';
-import EditCode from '../../Component/students/editCode';
 import GeneratCode from '../../Component/students/generateCode';
 import ListScore from '../../Component/students/listScore';
 import QuizIcon from '@mui/icons-material/Quiz';
@@ -17,12 +16,16 @@ import CodeIcon from '@mui/icons-material/Code';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import Login from './login';
 import Home from './homepage';
+import MyLayout from '../../Component/myLayout/mylayout';
+import EditStudent from '../../Component/students/editStudent';
+import Editstatus from '../../Component/students/editstatus';
 
 function DashboardAdmin() {
   return (
     <div className="Admin">
       <Admin
         dashboard={Home}
+        layout={MyLayout}
         basename="/admin"
         dataProvider={dataProvider}
         authProvider={authProvider}
@@ -50,8 +53,9 @@ function DashboardAdmin() {
           icon={CodeIcon}
           name="student-code"
           list={ListCode}
-          edit={EditCode}
+          edit={EditStudent}
           create={GeneratCode}
+          show={Editstatus}
           options={{ label: 'Students Codes' }}
         />
         <Resource
