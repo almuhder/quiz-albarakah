@@ -19,7 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('signup', [\App\Http\Controllers\AuthAdminController::class, 'signup']);
 Route::post('login', [\App\Http\Controllers\AuthAdminController::class, 'login']);
 Route::get('logout', [\App\Http\Controllers\AuthAdminController::class, 'logout'])
     ->middleware(['auth:admin','scopes:admin']);
@@ -29,6 +28,14 @@ Route::post('forgot-password', [\App\Http\Controllers\AuthAdminController::class
 Route::post('reset-password', [\App\Http\Controllers\AuthAdminController::class, 'resetPassword']);
 Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class, 'changePassword'])
     ->middleware(['auth:admin','scopes:admin']);
+
+
+Route::middleware(['auth:admin','scopes:admin'])->prefix('settings')->group(function () {
+    Route::post('edit-time/{setting}', [\App\Http\Controllers\SettingController::class, 'update']);
+    Route::get('/', [\App\Http\Controllers\SettingController::class, 'index']);
+    Route::get('/dash', [\App\Http\Controllers\SettingController::class, 'statistics']);
+});
+
 
 Route::get('question', [\App\Http\Controllers\QuestionController::class, 'index'])
     ->middleware(['auth:admin,student']);

@@ -48,7 +48,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $students = Student::query();
-        $searchByNum = $request->searchByNumber;
+        $searchByNum = $request->student_number;
         if ($searchByNum !== null) {
             $students->where('student_number', 'LIKE', '%' . $searchByNum . '%');
         }
@@ -151,9 +151,6 @@ class StudentController extends Controller
     {
         $student = auth('student')->user();
         if ($student->status == 0) {
-            $result = Result::query()->where('student_id', $student->id)->first();
-//            dd(isset($result));
-            if (! isset($result)) {
                 $result = Result::query()->create([
                     'score' => $request->score,
                     'student_id' => auth('student')->id(),
@@ -162,16 +159,6 @@ class StudentController extends Controller
                     'status' => 1
                 ]);
                  return $this->returnData('data', $result, 'added result successfully');
-            }else {
-                $result->update([
-                    'score' => $request->score,
-                    'student_id' => auth('student')->id(),
-                ]);
-                $student->update([
-                    'status' => 1
-                ]);
-                return $this->returnData('data', $result, 'updated result successfully');
-            }
         }else {
             return $this->returnErrorMessage('already has result', 403);
         }

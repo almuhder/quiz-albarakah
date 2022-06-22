@@ -22,19 +22,6 @@ class AuthAdminController extends Controller
 {
 use GeneralTrait;
 
-    public function signup(RegisterRequest $request){
-
-        $admin = Admin::query()->create([
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-        ]);
-        $token = $admin->createToken('admin', ['admin']);
-        $data['admin']=$admin;
-        $data['type']='Bearer';
-        $data['token']=$token->accessToken;
-        return $this->returnData('data', $data,'successfully registered');
-    }
-
     public function login(LoginRequest $request){
         $user = Admin::query()->where('email', $request->email)->first();
         if(!isset($user)) {

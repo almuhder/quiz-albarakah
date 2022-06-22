@@ -21,10 +21,10 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'updated_at', 'remember_token'
     ];
+    protected $dateFormat = 'Y-m-d';
 
     public function sendPasswordResetNotification($token)
     {
-
         $url = 'http://localhost:3000/admin/reset?token='. $token;
         $this->notify(new ResetPasswordNotification($url));
     }
