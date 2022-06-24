@@ -32,9 +32,11 @@ Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class
 
 Route::middleware(['auth:admin','scopes:admin'])->prefix('settings')->group(function () {
     Route::post('edit-time/{setting}', [\App\Http\Controllers\SettingController::class, 'update']);
-    Route::get('/', [\App\Http\Controllers\SettingController::class, 'index']);
+
     Route::get('/dash', [\App\Http\Controllers\SettingController::class, 'statistics']);
 });
+Route::get('settings/', [\App\Http\Controllers\SettingController::class, 'index'])
+    ->middleware(['auth:admin,student']);
 
 
 Route::get('question', [\App\Http\Controllers\QuestionController::class, 'index'])
