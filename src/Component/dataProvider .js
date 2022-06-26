@@ -8,7 +8,9 @@ const apiUrl = 'http://127.0.0.1:8000/api/';
 
 var create = '';
 var method = '';
+var body = '';
 
+// fetch api model
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: 'application/json' });
@@ -24,20 +26,49 @@ export default {
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+      sort: field,
+      range: [(page - 1) * perPage, page * perPage - 1],
       filter: JSON.stringify(params.filter),
     };
+
+    // method request
     resource === 'student-code' ? (method = 'POST') : (method = 'GET');
 
-    const url = `${apiUrl}${resource}?${stringify(query)}`;
+    // filter results
+    const filter = query.filter;
+    filter ? (body = filter) : (body = '');
+    function compare(a, b) {
+      if (query.sort === 'student_number') {
+        return a.student_number - b.student_number;
+      }
+    }
+    // header
+    var header = {};
+    if (method === 'POST') {
+      header = {
+        method: method,
+        body: body,
+      };
+    } else if (method === 'GET') {
+      header = {
+        method: method,
+      };
+    }
+    // range of resultes
+    const indexRange = (arr, start, end) => {
+      return arr.slice(start, end);
+    };
 
-    return await httpClient(url, {
-      method: method,
-    }).then(({ headers, json }) => ({
-      data: json.data,
-      total: 10,
-      // parseInt(headers.get('content-range').split('/').pop(), 10)
+    //  url
+    const url = `${apiUrl}${resource}`;
+
+    return await httpClient(url, header).then(({ headers, json }) => ({
+      data: indexRange(
+        json.data.sort(compare),
+        query.range[0],
+        query.range[1] + 1
+      ),
+      total: json.data.length,
     }));
   },
   // git one of items
@@ -104,16 +135,6 @@ export default {
     return data;
   },
 
-  // updateMany: async (resource, params) => {
-  //   const query = {
-  //     filter: JSON.stringify({ id: params.ids }),
-  //   };
-  //   return await httpClient(`${apiUrl}/${resource}/edit?${stringify(query)}`, {
-  //     method: 'PUT',
-  //     body: JSON.stringify(params.data),
-  //   }).then(({ json }) => ({ data: json.data }));
-  // },
-
   //  create new item
   create: async (resource, params) => {
     const data = {};
@@ -158,13 +179,4 @@ export default {
       .then((res) => (data['data'] = res.data));
     return data;
   },
-
-  // deleteMany: async (resource, params) => {
-  //   const query = {
-  //     filter: JSON.stringify({ id: params.ids }),
-  //   };
-  //   return await httpClient(`${apiUrl}${resource}/delete?${stringify(query)}`, {
-  //     method: 'DELETE',
-  //   }).then(({ json }) => ({ data: json.data }));
-  // },
 };

@@ -7,14 +7,18 @@ import {
   TextInput,
   required,
   SaveButton,
-  DeleteButton,
+  DeleteWithConfirmButton,
   Toolbar,
 } from 'react-admin';
 
 const PostEditToolbar = () => (
   <Toolbar className="row" sx={{ justifyContent: 'space-between' }}>
     <SaveButton className="col-2" label="edit question" icon={''} />
-    <DeleteButton className="col-1" />
+    <DeleteWithConfirmButton
+      className="col-1"
+      confirmTitle="Delete Qeustion"
+      confirmContent="هل انت متأكد تريد الحذف ؟"
+    />
   </Toolbar>
 );
 const EditQuestion = (props) => (

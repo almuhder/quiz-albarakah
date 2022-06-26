@@ -55,7 +55,7 @@ function Questions() {
   const [sumResult, setSumResult] = useState([]);
   const [Case, setCase] = useState('play');
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [visible, setVisible] = useState('visible');
+  const [visible, setVisible] = useState('hidden');
   const [next, setNext] = useState(false);
 
   // GET RESULT FOR EVERY QUESTION
@@ -130,7 +130,7 @@ function Questions() {
   return (
     <div className="m-0">
       <div className="row m-0 pt-5 pb-3 justify-content-end ">
-        <div className="col-2  text-right ">
+        <div className="col-4 col-sm-3 col-md-3 col-lg-2  text-right ">
           <Link to={'/'}>
             <img src={logo} alt="albarakah" style={{ width: '50%' }}></img>
           </Link>

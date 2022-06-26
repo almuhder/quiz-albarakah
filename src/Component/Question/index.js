@@ -57,8 +57,8 @@ const Question = (props) => {
         alignItems: 'center',
       }}
     >
-      <div className="col-6 text-center">
-        <p style={{ fontSize: '50px', color: '#693C11' }}>
+      <div className="col-11 col-sm-11 col-md-8 text-center">
+        <p style={{ fontSize: '2rem', color: '#693C11' }}>
           {question_data.question_value}
         </p>
         <Button
@@ -67,7 +67,7 @@ const Question = (props) => {
             e.target.style.backgroundColor = '#E1901E';
             e.target.style.color = 'white';
           }}
-          style={{ backgroundColor: '#F6F6F6', width: '15%', margin: '25px' }}
+          style={{ backgroundColor: '#F6F6F6', width: '5rem', margin: '25px' }}
           danger
           ref={handlebNo}
         >
@@ -81,7 +81,7 @@ const Question = (props) => {
           }}
           style={{
             backgroundColor: '#F6F6F6',
-            width: '15%',
+            width: '5rem',
             margin: '25px',
           }}
           danger

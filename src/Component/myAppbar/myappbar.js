@@ -8,7 +8,6 @@ import {
 } from 'react-admin';
 import { createTheme, Box, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
-import logo from '../../logo.png';
 import { useNavigate } from 'react-router-dom';
 
 // dark them
@@ -84,12 +83,6 @@ const MyAppBar = (props) => (
     <Box flex="1">
       <Typography variant="h6" id="react-admin-title"></Typography>
     </Box>
-    <img
-      className="mt-1 mb-1"
-      style={{ height: '45px', marginRight: '15rem' }}
-      src={logo}
-      alt="albarakah"
-    ></img>
     <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
   </AppBar>
 );

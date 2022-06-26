@@ -5,20 +5,19 @@ import {
   Datagrid,
   TextField,
   EditButton,
-  DeleteButton,
-  TextInput,
+  DeleteWithConfirmButton,
 } from 'react-admin';
 
 export const ListQuestion = (props) => (
   <List title={'Questions'} {...props}>
     <Datagrid>
-      <TextField source="id" label="ID" sortable={true} />
-      <TextField source="question_value" label="Question" />
-
-      <TextField source="type.type_name" label="Type" />
-
+      <TextField source="question_value" label="Question" sortable={false} />
+      <TextField source="type.type_name" label="Type" sortable={false} />
       <EditButton />
-      <DeleteButton />
+      <DeleteWithConfirmButton
+        confirmTitle="Delete Qeustion"
+        confirmContent="هل انت متأكد تريد الحذف ؟"
+      />
     </Datagrid>
   </List>
 );

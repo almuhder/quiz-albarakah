@@ -11,8 +11,8 @@ const Result = (props) => {
         alignItems: 'center',
       }}
     >
-      <div className="col-6 text-center">
-        <p style={{ fontSize: '50px', color: '#693C11' }}>
+      <div className="col-11  col-sx-10 col-md-8 col-lg-6 text-center">
+        <p style={{ fontSize: '2rem', color: '#693C11' }}>
           :تم الإنتهاء من الإمتحان ، نتيجتك هي
         </p>
         {props.sumResult.map((e, index) => (

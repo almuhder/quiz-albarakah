@@ -193,12 +193,6 @@ function Login() {
           >
             !نسيت كلمة المرور
           </Button>
-          <p>
-            {'    ليس لدي حساب   '}
-            <Link to="/admin/signup" style={{ textDecoration: 'none' }}>
-              التسجيل
-            </Link>
-          </p>
         </div>
       </div>
     </div>

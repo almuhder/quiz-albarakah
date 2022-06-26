@@ -18,7 +18,6 @@ import Login from './login';
 import Home from './homepage';
 import MyLayout from '../../Component/myLayout/mylayout';
 import EditStudent from '../../Component/students/editStudent';
-import Editstatus from '../../Component/students/editstatus';
 
 function DashboardAdmin() {
   return (
@@ -55,7 +54,6 @@ function DashboardAdmin() {
           list={ListCode}
           edit={EditStudent}
           create={GeneratCode}
-          show={Editstatus}
           options={{ label: 'Students Codes' }}
         />
         <Resource

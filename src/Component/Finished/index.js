@@ -35,8 +35,7 @@ const Finished = (props) => {
           localStorage.removeItem('student');
           localStorage.removeItem('token');
           swal({
-            title: '! انتهينا',
-            text: 'سوف نعرض لك النتيجة ',
+            title: '! لقد أتممت الاختبار',
             icon: 'success',
             button: ' حسناً',
           }).then(() => {
@@ -87,8 +86,8 @@ const Finished = (props) => {
         alignItems: 'center',
       }}
     >
-      <div className="col-6 text-center">
-        <p style={{ fontSize: '50px', color: '#693C11' }}>
+      <div className="col-11 col-sm-11 col-md-8 text-center">
+        <p style={{ fontSize: '2rem', color: '#693C11' }}>
           هل متأكد تريد الإنتهاء؟
         </p>
         <Button
@@ -97,7 +96,7 @@ const Finished = (props) => {
           block
           style={{
             backgroundColor: '#E1901E',
-            width: '35%',
+            width: '12rem',
             margin: '25px',
             border: 'none',
           }}

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import Time from '../../Component/timeQuiz';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 
 const Timer = () => {
+  const Time = localStorage.getItem('time') * 60;
   const [time, setTime] = useState(Time);
 
   const navigate = useNavigate();
