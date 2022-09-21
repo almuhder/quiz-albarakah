@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
     {
         DB::table('admins')->delete();
         Admin::query()->create([
-            'email' => 'albarakah@gmail.com',
+            'email' => 'abdulrahemalz1@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('albarakah12345@@'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
