@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,6 +43,7 @@ class Result extends Model
         $result = $this->orderResultByTypes(implode($results));
         return $result;
     }
+
     private function orderResultByTypes($value) {
         $types = Type::query()->get();
         foreach ($types as $type){
