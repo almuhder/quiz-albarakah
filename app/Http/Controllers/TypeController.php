@@ -13,7 +13,8 @@ class TypeController extends Controller
 {
     public function index()
     {
-        $types = Type::query()->get();
+        $perPage = \request()->query('perPage');
+        $types = Type::query()->paginate($perPage);
         return successResponse($types);
     }
 
