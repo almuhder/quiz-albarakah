@@ -24,7 +24,7 @@ class StoreQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            'question_value' => 'required|string',
+            'content' => 'required|string',
             'type_id' => 'required|exists:types,id'
         ];
     }

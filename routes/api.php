@@ -1,7 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AuthAdminController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\TypeController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,57 +18,43 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(AuthAdminController::class)->prefix('admin')->group(function () {
+    Route::post('login', 'login');
+    Route::post('forgot-password', 'forgotPassword');
+    Route::post('reset-password', 'resetPassword');
+    Route::middleware(['auth:admin','scopes:admin'])->group(function () {
+        Route::post('change-password', 'changePassword');
+        Route::get('logout', 'logout');
+    });
 });
 
+Route::controller(SettingController::class)->prefix('settings')->group(function () {
+    Route::middleware(['auth:admin','scopes:admin'])->group(function () {
+        Route::post('edit-time/{setting}', 'update');
+        Route::get('/dash', 'statistics');
+    });
+    Route::get('/', 'index')->middleware(['auth:admin,student']);
+});
 
-Route::post('login', [\App\Http\Controllers\AuthAdminController::class, 'login']);
-Route::get('logout', [\App\Http\Controllers\AuthAdminController::class, 'logout'])
+Route::apiResource('question', QuestionController::class)->only(['store', 'update', 'destroy'])
+    ->middleware(['auth:admin','scopes:admin']);
+Route::get('question', [QuestionController::class, 'index'])->middleware(['auth:admin','scopes:admin']);
+
+Route::apiResource('type', TypeController::class)->middleware(['auth:admin','scopes:admin']);
+
+Route::apiResource('student', StudentController::class)->only(['store', 'update', 'destroy'])
     ->middleware(['auth:admin','scopes:admin']);
 
-
-Route::post('forgot-password', [\App\Http\Controllers\AuthAdminController::class, 'forgotPassword']);
-Route::post('reset-password', [\App\Http\Controllers\AuthAdminController::class, 'resetPassword']);
-Route::post('change-password', [\App\Http\Controllers\AuthAdminController::class, 'changePassword'])
-    ->middleware(['auth:admin','scopes:admin']);
-
-
-Route::middleware(['auth:admin','scopes:admin'])->prefix('settings')->group(function () {
-    Route::post('edit-time/{setting}', [\App\Http\Controllers\SettingController::class, 'update']);
-
-    Route::get('/dash', [\App\Http\Controllers\SettingController::class, 'statistics']);
-});
-Route::get('settings/', [\App\Http\Controllers\SettingController::class, 'index'])
-    ->middleware(['auth:admin,student']);
-
-
-Route::get('question', [\App\Http\Controllers\QuestionController::class, 'index'])
-    ->middleware(['auth:admin,student']);
-Route::middleware(['auth:admin','scopes:admin'])->prefix('question')->group(function (){
-    Route::put('edit/{questionID}', [\App\Http\Controllers\QuestionController::class, 'update']);
-    Route::post('/add', [\App\Http\Controllers\QuestionController::class, 'store']);
-    Route::delete('delete/{questionID}', [\App\Http\Controllers\QuestionController::class, 'destroy']);
+Route::controller(StudentController::class)->prefix('student')->group(function () {
+    Route::middleware(['auth:admin','scopes:admin'])->group(function () {
+        Route::put('activate-deactivate/{student}', 'activateDeactivate');
+        Route::post('/all','index');
+        Route::get('results','studentsWithResults');
+    });
+    Route::post('login','login');
 });
 
-
-Route::middleware(['auth:admin','scopes:admin'])->prefix('type')->group(function (){
-    Route::get('/', [\App\Http\Controllers\TypeController::class, 'index']);
-    Route::put('edit/{typeID}', [\App\Http\Controllers\TypeController::class, 'update']);
-    Route::post('/add', [\App\Http\Controllers\TypeController::class, 'store']);
-    Route::delete('delete/{typeID}', [\App\Http\Controllers\TypeController::class, 'destroy']);
+Route::controller(ExamController::class)->prefix('exam')->middleware('auth:student')->group(function () {
+    Route::get('start', 'startExam');
+    Route::post('end', 'endExam');
 });
-
-Route::middleware(['auth:admin','scopes:admin'])->prefix('student-code')->group(function (){
-    Route::post('/', [\App\Http\Controllers\StudentController::class, 'index']);
-    Route::get('student-results', [\App\Http\Controllers\StudentController::class, 'studentResults']);
-    Route::post('/generate', [\App\Http\Controllers\StudentController::class, 'store']);
-    Route::post('/search', [\App\Http\Controllers\StudentController::class, 'search']);
-    Route::put('edit/{studentID}', [\App\Http\Controllers\StudentController::class, 'update']);
-    Route::put('edit-status/{studentID}', [\App\Http\Controllers\StudentController::class, 'updateStatus']);
-    Route::delete('delete/{studentID}', [\App\Http\Controllers\StudentController::class, 'destroy']);
-});
-Route::post('store-result', [\App\Http\Controllers\StudentController::class, 'storeResult'])
-    ->middleware(['auth:admin,student']);
-Route::post('login-student', [\App\Http\Controllers\StudentController::class, 'login']);

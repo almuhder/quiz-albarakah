@@ -10,12 +10,12 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'question_value','type_id'
+        'content', 'type_id'
     ];
 
 
     protected $hidden = [
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'pivot'
     ];
 
 

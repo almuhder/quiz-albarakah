@@ -22,33 +22,29 @@ use Nette\Schema\ValidationException;
 use \Illuminate\Support\Str;
 use Exception;
 
-
 class AuthAdminController extends Controller
 {
-use GeneralTrait;
-
     public function login(LoginRequest $request){
+
         $user = Admin::query()->where('email', $request->email)->first();
         if(!isset($user)) {
-           return $this->returnErrorMessage('User Not Found', 404);
+           return errorResponse('User Not Found', 404);
         }
         if (!Hash::check(request('password'), $user->password)) {
-            return $this->returnErrorMessage('Incorrect password', 403);
+            return errorResponse('Incorrect password', 403);
         }
 
-        $token=$user->createToken('admin', ['admin']);
-        $data['admin']=$user;
-        $data['type']='Bearer';
-        $data['token']=$token->accessToken;
-//        $token = $user->createToken('My Token', ['place-orders'])->accessToken;
-//        ['place-orders']
+        $token = $user->createToken('admin', ['admin']);
+        $data['admin'] = $user;
+        $data['type'] = 'Bearer';
+        $data['token'] = $token->accessToken;
 
-        return $this->returnData('data', $data,'logged in successfully');
+        return successResponse($data);
     }
 
     public function logout() {
         Auth::user()->tokens()->delete();
-        return $this->returnSuccessMessage('logged out successfully');
+        return successMessage('logged out successfully');
     }
 
     public function forgotPassword(ForgotPasswordRequest $request) {
@@ -64,12 +60,12 @@ use GeneralTrait;
                     'created_at' => now(),
                 ]);
             }
+            $url =  config('app.reset_password_url').'?token=' . $token;
+            Mail::to($request->email)->send(new ForgotPasswordMail($url));
 
-            $url = 'http://localhost:3000/admin/reset?token=' . $token;
-            Mail::to('abdulrahemalz1@gmail.com')->send(new ForgotPasswordMail($url));
-            return $this->returnSuccessMessage('Check your email');
+            return successMessage('Check your email');
         } catch (Exception $exception) {
-            return $this->returnErrorMessage($exception->getMessage(),400);
+            return errorResponse($exception->getMessage(),400);
         }
     }
 
@@ -80,14 +76,21 @@ use GeneralTrait;
         $resetPasswordToken = DB::table('password_resets')->where('email', $email)->first();
         $admin = Admin::query()->where('email', $email)->first();
         if (isset($resetPasswordToken) && Hash::check($token, $resetPasswordToken->token)) {
-            $admin->update([
-                'password' => Hash::make($password),
-            ]);
-            $admin->tokens()->delete();
-            DB::table('password_resets')->where('email', $email)->delete();
-            return $this->returnSuccessMessage('reset password successfully');
+            try {
+                DB::beginTransaction();
+                $admin->update([
+                    'password' => Hash::make($password),
+                ]);
+                $admin->tokens()->delete();
+                DB::table('password_resets')->where('email', $email)->delete();
+                DB::commit();
+            }catch (Exception $exception) {
+                DB::rollBack();
+                return errorResponse($exception->getMessage(), $exception->getCode());
+            }
+            return successMessage('reset password successfully');
         }
-        return $this->returnErrorMessage('invalid token, please try again', 403);
+        return errorResponse('invalid token, please try again', 403);
     }
 
     public function changePassword(ChangePasswordRequest $request) {
@@ -96,9 +99,9 @@ use GeneralTrait;
             $user->update([
                 'password' => Hash::make($request->new_password),
             ]);
-            return $this->returnSuccessMessage('change password success');
+            return successMessage('change password success');
         }else {
-            return $this->returnErrorMessage('the old password does not match', 403);
+            return errorResponse('the old password does not match', 403);
         }
     }
 

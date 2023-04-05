@@ -24,8 +24,14 @@ class StoreStudentRequest extends FormRequest
     public function rules()
     {
         return [
-//            'student_number' => 'required|string',
-//            'status' => 'boolean',
+            'student_number' => 'required|numeric|unique:students,student_number',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'student_number.unique' => 'student already exists'
         ];
     }
 }

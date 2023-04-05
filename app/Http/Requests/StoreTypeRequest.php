@@ -24,7 +24,14 @@ class StoreTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'type_name' =>  'required|string',
+            'name' =>  'required|string|unique:types,name',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+          'name.unique' => 'type name already exists'
         ];
     }
 }

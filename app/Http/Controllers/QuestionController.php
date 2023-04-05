@@ -11,63 +11,32 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-    use GeneralTrait;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $questions = Question::query()->with('type')->get();
-        return $this->returnData('data', $questions, 'List Questions');
+        $questions = Question::query()->with('type')->paginate(20);
+        return successResponse($questions);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreQuestionRequest $request)
     {
-        try {
-            $question = Question::query()->create([
-                'question_value'=>$request->question_value,
-                'type_id'=>$request->type_id,
-            ]);
-            return $this->returnData('data', $question, 'added question success');
-        }catch (\Exception $exception) {
-            return  $exception->getMessage();
-        }
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateQuestionRequest $request, Question $questionID)
-    {
-        $questionID->update([
-            'question_value' => $request->question_value,
-            'type_id' => $request->type_id,
+        $question = Question::query()->create([
+            'content'=>$request->get('content'),
+            'type_id'=>$request->type_id,
         ]);
-        return $this->returnData('data', $questionID, 'updated question success');
+        return successResponse($question);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Question $questionID)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $questionID->delete();
-        return $this->returnSuccessMessage('deleted question success');
+        $question->update([
+            'content' => $request->get('content'),
+        ]);
+        return successResponse($question);
+    }
+
+    public function destroy(Question $question)
+    {
+        $question->delete();
+        return successResponse(__('general.deleted'));
     }
 }

@@ -27,17 +27,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes();
-//        Passport::tokensExpireIn(now()->addMinutes(60));
-//        Passport::refreshTokensExpireIn(now()->addMinutes(60));
-//        Passport::personalAccessTokensExpireIn(now()->addMinutes(60));
         Passport::tokensCan([
             'admin' => 'admin',
             'student' => 'student',
         ]);
-//        Passport::tokensCan([
-//            'student' => 'Student User Type',
-//            'admin' => 'Admin User Type',
-//        ]);
 
         //
     }
