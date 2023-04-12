@@ -10,6 +10,7 @@ use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use function PHPUnit\Framework\isEmpty;
 
 class SettingController extends Controller
 {
@@ -39,21 +40,25 @@ class SettingController extends Controller
         $students = Student::count()->get();
         $typesWithCountQuestion = Type::countWithQuestions()->get();
 
-        $students[0]->status ?
-            $activeStudents = $students[0]->students & $nonActiveStudents = $students[1]->students :
-            $activeStudents = $students[1]->students & $nonActiveStudents = $students[0]->students;
+        if (sizeof($students)) {
+            $students[0]->status ?
+                $activeStudents = $students[0]->students & $nonActiveStudents = $students[1]->students :
+                $activeStudents = $students[1]->students & $nonActiveStudents = $students[0]->students;
 
-        foreach ($typesWithCountQuestion as $type) {
-            $types += 1;
-            $questions += $type->questions;
+            foreach ($typesWithCountQuestion as $type) {
+                $types += 1;
+                $questions += $type->questions;
+            }
+            $data['Students'] =  $activeStudents + $nonActiveStudents;
+            $data['ActiveStudents'] =  $activeStudents;
+            $data['NonActiveStudents'] =  $nonActiveStudents;
+            $data['countTypes'] = $types;
+            $data['countQuestions'] = $questions;
+            $data['countTypeWithCountQuestion'] = $typesWithCountQuestion;
+            return successResponse($data);
         }
-        $data['Students'] =  $activeStudents + $nonActiveStudents;
-        $data['ActiveStudents'] =  $activeStudents;
-        $data['NonActiveStudents'] =  $nonActiveStudents;
-        $data['countTypes'] = $types;
-        $data['countQuestions'] = $questions;
-        $data['countTypeWithCountQuestion'] = $typesWithCountQuestion;
-        return successResponse($data);
+        return successResponse([]);
+
     }
 
 }

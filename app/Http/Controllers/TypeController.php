@@ -14,7 +14,8 @@ class TypeController extends Controller
     public function index()
     {
         $perPage = \request()->query('perPage');
-        $types = Type::query()->paginate($perPage);
+        $page = \request()->query('page');
+        $types = Type::query()->paginate($perPage,['*'], 'page',$page);
         return successResponse($types);
     }
 

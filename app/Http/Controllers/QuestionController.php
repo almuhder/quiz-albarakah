@@ -14,7 +14,9 @@ class QuestionController extends Controller
     public function index()
     {
         $perPage = \request()->query('perPage');
-        $questions = Question::query()->with('type')->paginate($perPage);
+        $page = \request()->query('page');
+
+        $questions = Question::query()->with('type')->paginate($perPage,['*'], 'page',$page);;
         return successResponse($questions);
     }
 

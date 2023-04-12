@@ -39,12 +39,14 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('perPage');
+        $page = $request->query('page');
         $students = Student::query();
         $searchByNum = $request->student_number;
         if ($searchByNum !== null) {
             $students->where('student_number', 'LIKE', '%' . $searchByNum . '%');
         }
-        $students = $students->paginate($perPage);
+
+        $students = $students->paginate($perPage,['*'], 'page',$page);
         return successResponse($students);
     }
 
