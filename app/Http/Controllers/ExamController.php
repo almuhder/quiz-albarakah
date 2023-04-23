@@ -30,7 +30,7 @@ class ExamController extends Controller
                         $data[] = [
                             'question_id' => $question['id'],
                             'result_id' => $result->id,
-                            'status' => $request->answer,
+                            'status' => $question['answer'],
                         ];
                 }
                 DB::table('result_question')->insert($data);
