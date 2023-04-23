@@ -55,7 +55,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'reset_password_url' => env('RESET_PASSWORD_URL', 'http://127.0.0.1:8000/admin/reset'),
+    'reset_password_url' => env('RESET_PASSWORD_URL', 'localhost:3000/admin/reset'),
 
     'asset_url' => env('ASSET_URL', null),
 
