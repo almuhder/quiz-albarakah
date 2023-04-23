@@ -25,6 +25,7 @@ class ExamController extends Controller
                 $result = Result::query()->create([
                     'student_id' => $student->id
                 ]);
+                $result->refresh();
                 foreach ($request->questions as $question) {
                     if ($question['answer'] == 1) {
                         $data[] = [
@@ -41,7 +42,7 @@ class ExamController extends Controller
                 DB::rollBack();
                 return errorResponse($exception->getMessage(), $exception->getCode());
             }
-            return successMessage(__('general.success'));
+            return successResponse($result);
         }
         return errorResponse(__('auth.unauthorized'), 403);
     }

@@ -46,6 +46,7 @@ class Result extends Model
 
     private function orderResultByTypes($value) {
         $types = Type::query()->get();
+        $data = [];
         foreach ($types as $type){
             for ($i = 0; $i < strlen($value); $i+=2) {
                 if ($value[$i] == $type->name)

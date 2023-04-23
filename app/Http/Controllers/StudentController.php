@@ -94,7 +94,7 @@ class StudentController extends Controller
     public function studentsWithResults() {
         $perPage = \request()->query('perPage');
         $students = Student::query()->with('results')->paginate($perPage);
-        return $students;
+        return successResponse($students);
     }
 
 }
