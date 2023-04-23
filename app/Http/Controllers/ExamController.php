@@ -27,12 +27,11 @@ class ExamController extends Controller
                 ]);
                 $result->refresh();
                 foreach ($request->questions as $question) {
-                    if ($question['answer'] == 1) {
                         $data[] = [
                             'question_id' => $question['id'],
                             'result_id' => $result->id,
+                            'status' => $request->answer,
                         ];
-                    }
                 }
                 DB::table('result_question')->insert($data);
                 $student->token()->delete();

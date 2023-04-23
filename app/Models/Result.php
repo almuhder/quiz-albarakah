@@ -26,7 +26,10 @@ class Result extends Model
         return $this->belongsToMany(
             Question::class,
             'result_question',
-            'result_id', 'question_id')->with('type');
+            'result_id',
+             'question_id')
+             ->withPivot('result_id', 'question_id', 'status')
+             ->with('type');
     }
 
     protected $appends = ['result'];
@@ -37,10 +40,16 @@ class Result extends Model
     private function groupedQuestionsByType() {
         $results = [];
         $groupedQuestions = $this->questions()->get()->groupBy('type_id');
-        foreach ($groupedQuestions as $item) {
-            $results[] =  $item[0]->type->name . count($item);
+        foreach ($groupedQuestions as $key => $items) {
+            $results[$key]['type'] =  $items[0]->type->name; 
+            $counter = 0; 
+            foreach($items as $item) {
+                $counter += $item->pivot->status;
+            }
+            $results[$key]['number'] = $counter;  
+
         }
-        $result = $this->orderResultByTypes(implode($results));
+        $result = $this->orderResultByTypes($results);
         return $result;
     }
 
@@ -48,10 +57,10 @@ class Result extends Model
         $types = Type::query()->get();
         $data = [];
         foreach ($types as $type){
-            for ($i = 0; $i < strlen($value); $i+=2) {
-                if ($value[$i] == $type->name)
+            foreach($value as $item) {
+                if ($item['type'] == $type->name)
                 {
-                    $data[] = $value[$i].$value[$i+1];
+                    $data[] = $item['type'] . $item['number'];
                 }
             }
         }
